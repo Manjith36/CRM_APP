@@ -1,0 +1,3 @@
+export const CUSTOMER_TYPES = ['REGULAR', 'PREMIUM', 'VIP'];
+export const INTERACTION_TYPES = ['INQUIRY', 'PURCHASE', 'RETURN'];
+export const INTERACTION_STATUSES = ['OPEN', 'RESOLVED'];
