@@ -18,13 +18,13 @@ const Login = () => {
       const response = await apiPost('/api/auth/login', formData);
       localStorage.setItem('user', JSON.stringify(response.user));
       
-      //user role
+      // Redirect based on user role
       if (response.user.role === 'ADMIN') {
         navigate('/dashboard');
       } else if (response.user.role === 'SALES_REP') {
         navigate('/dashboard');
       } else if (response.user.role === 'ANALYST') {
-        navigate('/dashboard');
+        navigate('/analytics');
       } else {
         navigate('/dashboard');
       }
