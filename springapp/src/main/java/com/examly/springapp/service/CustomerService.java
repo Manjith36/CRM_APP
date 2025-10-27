@@ -42,9 +42,7 @@ public class CustomerService {
         return customerRepository.findAll(pageable);
     }
     
-    public Page<Customer> getAllCustomers(Pageable pageable) {
-        return customerRepository.findAll(pageable);
-    }
+    
     
     public Optional<Customer> getCustomerById(Long id) {
         return customerRepository.findById(id);
