@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { apiGet } from '../utils/api';
 import './InteractionChart.css';
 
 const InteractionChart = ({ refreshTrigger }) => {
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, data: null });
 
   useEffect(() => {
     const fetchInteractionStats = async () => {
@@ -28,11 +28,15 @@ const InteractionChart = ({ refreshTrigger }) => {
           });
         }
         
-        // Always show all interaction types
         const allTypes = ['PURCHASE', 'INQUIRY', 'RETURN'];
         const data = allTypes.map(type => {
           const typeStats = stats[type] || { total: 0, open: 0, resolved: 0 };
-          return { type, count: typeStats.total, open: typeStats.open, resolved: typeStats.resolved };
+          return { 
+            name: type, 
+            total: typeStats.total, 
+            open: typeStats.open, 
+            resolved: typeStats.resolved 
+          };
         });
         setChartData(data);
       } catch (error) {
@@ -45,56 +49,40 @@ const InteractionChart = ({ refreshTrigger }) => {
     fetchInteractionStats();
   }, [refreshTrigger]);
 
-  if (loading) return <div>Loading chart...</div>;
-  const maxCount = Math.max(...chartData.map(item => item.count), 1);
-
-  const getBarColorClass = (type) => {
-    switch(type.toUpperCase()) {
-      case 'PURCHASE': return 'bar-color-purchase';
-      case 'INQUIRY': return 'bar-color-enquiry';
-      case 'RETURN': return 'bar-color-return';
-      default: return `bar-color-${chartData.findIndex(item => item.type === type) % 6}`;
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="recharts-tooltip">
+          <p><strong>{label}</strong></p>
+          <p>Total: {payload[0].payload.total}</p>
+          <p>Open: {payload[0].payload.open}</p>
+          <p>Resolved: {payload[0].payload.resolved}</p>
+        </div>
+      );
     }
+    return null;
   };
+
+  const colors = ['#00ff00', '#8000ff', '#eb5600']; // Purchase=green, Inquiry=purple, Return=orange
+
+  if (loading) return <div>Loading chart...</div>;
 
   return (
     <div className="interaction-chart">
       <h2>Interaction Types Distribution</h2>
-      <div className="chart-container">
-        {chartData.map(({ type, count, open, resolved }, index) => (
-          <div key={type} className="chart-bar">
-            <div className="bar-label">{type}</div>
-            <div className="bar-wrapper">
-              <div 
-                className={`bar ${getBarColorClass(type)}`}
-                style={{ width: `${(count / maxCount) * 300}px` }}
-                onMouseEnter={(e) => {
-                  const rect = e.target.getBoundingClientRect();
-                  setTooltip({
-                    visible: true,
-                    x: rect.right + 10,
-                    y: rect.top,
-                    data: { type, total: count, open, resolved }
-                  });
-                }}
-                onMouseLeave={() => setTooltip({ visible: false, x: 0, y: 0, data: null })}
-              />
-              <div className="bar-value">{count}</div>
-            </div>
-          </div>
-        ))}
-        {tooltip.visible && (
-          <div 
-            className="tooltip"
-            style={{ left: tooltip.x, top: tooltip.y }}
-          >
-            <div><strong>{tooltip.data.type}</strong></div>
-            <div>Total: {tooltip.data.total}</div>
-            <div>Open: {tooltip.data.open}</div>
-            <div>Resolved: {tooltip.data.resolved}</div>
-          </div>
-        )}
-      </div>
+      <ResponsiveContainer width="100%" height={300}>
+        <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+          <XAxis dataKey="name" stroke="#333" />
+          <YAxis stroke="#333" />
+          <Tooltip content={<CustomTooltip />} />
+          <Bar dataKey="total">
+            {chartData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+            ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
     </div>
   );
 };

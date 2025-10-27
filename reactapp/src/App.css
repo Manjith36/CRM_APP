@@ -7,7 +7,7 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #ffffff; /* light background */
+  background-color: #f8f9fa; /* off-white background */
   color: #333333; /* dark text */
   min-height: 100vh;
 }
@@ -110,7 +110,7 @@ a {
 .customer-info,
 .add-interaction-section,
 .interaction-item {
-  background-color: #ffffff; /* light card */
+  background-color: #ffffff; /* white cards on off-white background */
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);

@@ -4,8 +4,8 @@
   max-width: 900px;
   margin: 0 auto;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #ffffff; /* light text */
-  background-color: #121212; /* dark background */
+  color: #333333; /* dark text */
+  background-color: #f8f9fa; /* off-white background */
   min-height: 100vh;
 }
 
@@ -14,7 +14,7 @@ h2, h3 {
   position: relative;
   display: inline-block;
   margin-bottom: 20px;
-  color: #fff;
+  color: #333;
 }
 
 h2::after, h3::after {
@@ -29,17 +29,18 @@ h2::after, h3::after {
 
 /* Customer Info Card */
 .customer-info {
-  background-color: #1f1f1f; /* dark card */
+  background-color: #ffffff; /* white card */
   padding: 25px 20px;
   border-radius: 12px;
   margin-bottom: 30px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  border: 1px solid #e0e0e0;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .customer-info:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.7);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
 }
 
 .customer-info h3 {
@@ -51,7 +52,7 @@ h2::after, h3::after {
 .customer-info p {
   margin: 8px 0;
   font-size: 15px;
-  color: #ffffff;
+  color: #333333;
 }
 
 /* Interactions Section */
@@ -66,30 +67,32 @@ h2::after, h3::after {
 }
 
 .interaction-item {
-  background-color: #1f1f1f;
+  background-color: #ffffff;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border: 1px solid #e0e0e0;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .interaction-item:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
 .interaction-item p {
   margin: 6px 0;
   font-size: 14px;
-  color: #ffffff;
+  color: #333333;
 }
 
 /* Add Interaction Section */
 .add-interaction-section {
-  background-color: #1f1f1f;
+  background-color: #ffffff;
   padding: 25px 20px;
   border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  border: 1px solid #e0e0e0;
 }
 
 .add-interaction-section h3 {
@@ -107,7 +110,7 @@ h2::after, h3::after {
   margin-bottom: 6px;
   font-weight: 600;
   font-size: 14px;
-  color: #ffffff;
+  color: #333333;
 }
 
 .add-interaction-form input,
@@ -115,11 +118,11 @@ h2::after, h3::after {
 .add-interaction-form textarea {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #333;
+  border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 14px;
-  background-color: #121212;
-  color: #e0e0e0;
+  background-color: #ffffff;
+  color: #333333;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -127,8 +130,8 @@ h2::after, h3::after {
 .add-interaction-form select:focus,
 .add-interaction-form textarea:focus {
   outline: none;
-  border-color: #ff0000;
-  box-shadow: 0 0 8px rgba(255,0,0,0.3);
+  border-color: #cc0000;
+  box-shadow: 0 0 8px rgba(204,0,0,0.3);
 }
 
 .add-interaction-form button {
@@ -160,7 +163,7 @@ h2::after, h3::after {
   font-size: 14px;
   margin-top: 10px;
   padding: 10px;
-  background-color: #2e2e2e;
+  background-color: #f8f9fa;
   border: 1px solid #28a745;
   border-radius: 6px;
 }
@@ -185,10 +188,10 @@ h2::after, h3::after {
 .interaction-item textarea {
   width: 100%;
   padding: 8px;
-  border: 1px solid #333;
+  border: 1px solid #ccc;
   border-radius: 6px;
-  background-color: #121212;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #333333;
   font-size: 14px;
   margin-left: 10px;
 }
@@ -196,8 +199,8 @@ h2::after, h3::after {
 .interaction-item select:focus,
 .interaction-item textarea:focus {
   outline: none;
-  border-color: #ff0000;
-  box-shadow: 0 0 5px rgba(255,0,0,0.3);
+  border-color: #cc0000;
+  box-shadow: 0 0 5px rgba(204,0,0,0.3);
 }
 
 .interaction-item button {

@@ -12,25 +12,34 @@ const Analytics = ({ refreshTrigger }) => {
   const [interactionCustomers, setInteractionCustomers] = useState([]);
   const [customerTypeCustomers, setCustomerTypeCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [allCustomersCache, setAllCustomersCache] = useState(null);
+  const [interactionsCache, setInteractionsCache] = useState({});
 
   const fetchCustomersByType = async (type, isInteraction = false) => {
     setLoading(true);
     try {
-      const allCustomers = await apiGet('/api/customers/getAllCustomersSimple');
+      if (!allCustomersCache) {
+        const customers = await apiGet('/api/customers/getAllCustomersSimple');
+        setAllCustomersCache(customers);
+      }
+      
       let filtered = [];
       
       if (isInteraction) {
         // Filter customers who have interactions of this type
-        for (const customer of allCustomers) {
-          const interactions = await apiGet(`/api/customers/${customer.id}/interactions`);
-          if (interactions.some(interaction => interaction.interactionType === type.toUpperCase())) {
+        for (const customer of allCustomersCache) {
+          if (!interactionsCache[customer.id]) {
+            const interactions = await apiGet(`/api/customers/${customer.id}/interactions`);
+            interactionsCache[customer.id] = interactions;
+          }
+          if (interactionsCache[customer.id]?.some(interaction => interaction.interactionType === type.toUpperCase())) {
             filtered.push(customer);
           }
         }
         setInteractionCustomers(filtered);
       } else {
         // Filter customers by customer type
-        filtered = allCustomers.filter(customer => customer.customerType === type.toUpperCase());
+        filtered = allCustomersCache.filter(customer => customer.customerType === type.toUpperCase());
         setCustomerTypeCustomers(filtered);
       }
     } catch (error) {
@@ -56,6 +65,8 @@ const Analytics = ({ refreshTrigger }) => {
 
   // Load initial data
   React.useEffect(() => {
+    setAllCustomersCache(null);
+    setInteractionsCache({});
     fetchCustomersByType('Purchase', true);
     fetchCustomersByType('Regular', false);
   }, [refreshTrigger]);
@@ -64,39 +75,6 @@ const Analytics = ({ refreshTrigger }) => {
     <div className="analytics-page">
       <h1>Analytics Dashboard</h1>
       
-      <div className="chart-section">
-        <InteractionChart refreshTrigger={refreshTrigger} />
-        <div className="youtube-tabs">
-          <div className="tab-list">
-            {['Purchase', 'Inquiry', 'Return'].map(tab => (
-              <button 
-                key={tab}
-                className={`tab ${activeInteractionTab === tab ? 'active' : ''}`}
-                onClick={() => handleInteractionTabClick(tab)}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
-          <div className="tab-content">
-            {loading ? (
-              <div>Loading customers...</div>
-            ) : (
-              <div className="customers-grid">
-                {interactionCustomers.map(customer => (
-                  <div key={customer.id} className="customer-card" onClick={() => handleCustomerClick(customer.id)}>
-                    <h4>{customer.firstName} {customer.lastName}</h4>
-                    <p>{customer.email}</p>
-                    <p>{customer.customerType}</p>
-                  </div>
-                ))}
-                {interactionCustomers.length === 0 && <div>No customers found for {activeInteractionTab} interactions.</div>}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
       <div className="chart-section">
         <CustomerTypeChart refreshTrigger={refreshTrigger} />
         <div className="youtube-tabs">
@@ -124,6 +102,39 @@ const Analytics = ({ refreshTrigger }) => {
                   </div>
                 ))}
                 {customerTypeCustomers.length === 0 && <div>No customers found for {activeCustomerTab} type.</div>}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="chart-section">
+        <InteractionChart refreshTrigger={refreshTrigger} />
+        <div className="youtube-tabs">
+          <div className="tab-list">
+            {['Purchase', 'Inquiry', 'Return'].map(tab => (
+              <button 
+                key={tab}
+                className={`tab ${activeInteractionTab === tab ? 'active' : ''}`}
+                onClick={() => handleInteractionTabClick(tab)}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+          <div className="tab-content">
+            {loading ? (
+              <div>Loading customers...</div>
+            ) : (
+              <div className="customers-grid">
+                {interactionCustomers.map(customer => (
+                  <div key={customer.id} className="customer-card" onClick={() => handleCustomerClick(customer.id)}>
+                    <h4>{customer.firstName} {customer.lastName}</h4>
+                    <p>{customer.email}</p>
+                    <p>{customer.customerType}</p>
+                  </div>
+                ))}
+                {interactionCustomers.length === 0 && <div>No customers found for {activeInteractionTab} interactions.</div>}
               </div>
             )}
           </div>

@@ -1,13 +1,14 @@
 .customer-type-chart {
-  background-color: #1f1f1f;
+  background-color: #ffffff;
   padding: 25px 20px;
   border-radius: 12px;
   margin-bottom: 30px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  border: 1px solid #e0e0e0;
 }
 
 .customer-type-chart h2 {
-  color: #ffffff;
+  color: #333333;
   margin-bottom: 20px;
   position: relative;
   display: inline-block;
@@ -21,6 +22,20 @@
   background-color: #ff0000;
   margin-top: 5px;
   border-radius: 2px;
+}
+
+.customer-type-chart .recharts-tooltip {
+  background-color: #ffffff;
+  color: #333333;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  border: 1px solid #ccc;
+}
+
+.customer-type-chart .recharts-tooltip p {
+  margin: 2px 0;
+  font-size: 13px;
 }
 
 .customer-type-chart .chart-container {
@@ -61,14 +76,14 @@
 
 
 .customer-type-chart .bar-value {
-  color: #ffffff;
+  color: #333333;
   font-weight: bold;
   font-size: 14px;
   min-width: 30px;
 }
 
 .customer-type-chart .bar-label {
-  color: #ffffff;
+  color: #333333;
   font-size: 14px;
   min-width: 120px;
   text-align: left;
@@ -76,15 +91,15 @@
 
 .customer-type-chart .tooltip {
   position: fixed;
-  background-color: #2a2a2a;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #333333;
   padding: 10px;
   border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   font-size: 13px;
   z-index: 1000;
   pointer-events: none;
-  border: 1px solid #444;
+  border: 1px solid #ccc;
 }
 
 .customer-type-chart .tooltip div {
