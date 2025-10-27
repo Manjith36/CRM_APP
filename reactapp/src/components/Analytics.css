@@ -1,0 +1,105 @@
+.analytics-page {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+.analytics-page h1 {
+  color: #333333;
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.analytics-page h1::after {
+  content: '';
+  display: block;
+  width: 200px;
+  height: 3px;
+  background-color: #ff0000;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+.chart-section {
+  margin-bottom: 40px;
+}
+
+.youtube-tabs {
+  background-color: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 20px;
+  border: 1px solid #e0e0e0;
+}
+
+.tab-list {
+  display: flex;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tab {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  color: #666666;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+  border-bottom: 3px solid transparent;
+}
+
+.tab:hover {
+  background-color: #e9ecef;
+  color: #333;
+}
+
+.tab.active {
+  color: #ff0000;
+  border-bottom-color: #ff0000;
+  background-color: #ffffff;
+}
+
+.tab-content {
+  padding: 20px;
+}
+
+.customers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.customer-card {
+  background-color: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.customer-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.1);
+  border-color: #ff0000;
+}
+
+.customer-card h4 {
+  margin: 0 0 8px 0;
+  color: #ff0000;
+  font-size: 16px;
+}
+
+.customer-card p {
+  margin: 4px 0;
+  color: #666666;
+  font-size: 14px;
+}
+

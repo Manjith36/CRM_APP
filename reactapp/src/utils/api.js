@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://localhost:8081';
 
 export const apiGet = async (url) => {
   const response = await fetch(`${BASE_URL}${url}`);
@@ -15,6 +15,32 @@ export const apiPost = async (url, data) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+  }
+  return response.json();
+};
+
+export const apiPut = async (url, data) => {
+  const response = await fetch(`${BASE_URL}${url}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+  }
+  return response.json();
+};
+
+export const apiDelete = async (url) => {
+  const response = await fetch(`${BASE_URL}${url}`, {
+    method: 'DELETE',
   });
   if (!response.ok) {
     const errorData = await response.json();

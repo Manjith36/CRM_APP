@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface InteractionRepository extends JpaRepository<Interaction, Long> {
     List<Interaction> findByCustomerId(Long customerId);
+    void deleteByCustomerId(Long customerId);
 }

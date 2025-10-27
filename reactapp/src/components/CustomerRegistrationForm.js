@@ -3,7 +3,7 @@ import { apiPost } from '../utils/api';
 import { CUSTOMER_TYPES } from '../utils/constants';
 import './CustomerRegistrationForm.css';
 
-const CustomerRegistrationForm = () => {
+const CustomerRegistrationForm = ({ onCustomerAdded }) => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -42,7 +42,7 @@ const CustomerRegistrationForm = () => {
     if (!validateForm()) return;
 
     try {
-      await apiPost('/api/customers', formData);
+      await apiPost('/api/customers/addCustomer', formData);
       setSuccessMessage('Customer registered successfully!');
       setFormData({
         firstName: '',
@@ -51,6 +51,7 @@ const CustomerRegistrationForm = () => {
         phoneNumber: '',
         customerType: ''
       });
+      if (onCustomerAdded) onCustomerAdded();
     } catch (error) {
       setApiError(error.message);
     }

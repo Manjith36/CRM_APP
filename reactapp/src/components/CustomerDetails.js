@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { apiGet } from '../utils/api';
+import { apiGet, apiPut } from '../utils/api';
 import AddInteractionForm from './AddInteractionForm';
+import { INTERACTION_TYPES, INTERACTION_STATUSES } from '../utils/constants';
 import './CustomerDetails.css';
 
 const CustomerDetails = () => {
@@ -10,10 +11,12 @@ const CustomerDetails = () => {
   const [interactions, setInteractions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [editingId, setEditingId] = useState(null);
+  const [editForm, setEditForm] = useState({});
 
   const fetchCustomerData = async () => {
     try {
-      const customerData = await apiGet(`/api/customers/${id}`);
+      const customerData = await apiGet(`/api/customers/getCustomer/${id}`);
       const interactionsData = await apiGet(`/api/customers/${id}/interactions`);
       setCustomer(customerData);
       setInteractions(interactionsData);
@@ -26,10 +29,34 @@ const CustomerDetails = () => {
 
   useEffect(() => {
     fetchCustomerData();
-  }, [id]);
+  }, [fetchCustomerData]);
 
   const handleInteractionAdded = () => {
     fetchCustomerData();
+  };
+
+  const handleEdit = (interaction) => {
+    setEditingId(interaction.id);
+    setEditForm({
+      interactionType: interaction.interactionType,
+      description: interaction.description,
+      status: interaction.status
+    });
+  };
+
+  const handleSave = async (id) => {
+    try {
+      await apiPut(`/api/interactions/${id}`, editForm);
+      setEditingId(null);
+      fetchCustomerData();
+    } catch (error) {
+      console.error('Error updating interaction:', error);
+    }
+  };
+
+  const handleCancel = () => {
+    setEditingId(null);
+    setEditForm({});
   };
 
   if (loading) {
@@ -61,10 +88,34 @@ const CustomerDetails = () => {
           <div className="interactions-list">
             {interactions.map(interaction => (
               <div key={interaction.id} data-testid={`interaction-row-${interaction.id}`} className="interaction-item">
-                <p><strong>Type:</strong> {interaction.interactionType}</p>
-                <p><strong>Date:</strong> {new Date(interaction.interactionDate).toLocaleString()}</p>
-                <p><strong>Description:</strong> {interaction.description}</p>
-                <p><strong>Status:</strong> {interaction.status}</p>
+                {editingId === interaction.id ? (
+                  <div>
+                    <p><strong>Type:</strong>
+                      <select value={editForm.interactionType} onChange={(e) => setEditForm({...editForm, interactionType: e.target.value})}>
+                        {INTERACTION_TYPES.map(type => <option key={type} value={type}>{type}</option>)}
+                      </select>
+                    </p>
+                    <p><strong>Date:</strong> {new Date(interaction.interactionDate).toLocaleString()}</p>
+                    <p><strong>Description:</strong>
+                      <textarea value={editForm.description} onChange={(e) => setEditForm({...editForm, description: e.target.value})} />
+                    </p>
+                    <p><strong>Status:</strong>
+                      <select value={editForm.status} onChange={(e) => setEditForm({...editForm, status: e.target.value})}>
+                        {INTERACTION_STATUSES.map(status => <option key={status} value={status}>{status}</option>)}
+                      </select>
+                    </p>
+                    <button onClick={() => handleSave(interaction.id)}>Save</button>
+                    <button onClick={handleCancel}>Cancel</button>
+                  </div>
+                ) : (
+                  <div>
+                    <p><strong>Type:</strong> {interaction.interactionType}</p>
+                    <p><strong>Date:</strong> {new Date(interaction.interactionDate).toLocaleString()}</p>
+                    <p><strong>Description:</strong> {interaction.description}</p>
+                    <p><strong>Status:</strong> {interaction.status}</p>
+                    <button onClick={() => handleEdit(interaction)}>Edit</button>
+                  </div>
+                )}
               </div>
             ))}
           </div>
